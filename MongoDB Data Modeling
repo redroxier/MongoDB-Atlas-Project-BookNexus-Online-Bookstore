@@ -93,3 +93,21 @@ d. Total Orders by Customer
 db.orders.aggregate([
   { $group: { _id: "$customer_id", totalOrders: { $sum: 1 } } }
 ])
+
+
+ Average Price by Category
+[
+  { $group: { _id: "$category", avgPrice: { $avg: "$price" } } }
+]
+
+
+ Top 5 Rated Books
+[
+  { $sort: { rating: -1 } },
+  { $limit: 5 }
+]
+
+Count of Books by Format
+[
+  { $group: { _id: "$format", count: { $sum: 1 } } }
+]

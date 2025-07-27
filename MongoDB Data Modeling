@@ -1,0 +1,95 @@
+Sample Collection Design
+
+books
+
+{
+  "_id": "B101",
+  "title": "MongoDB Mastery",
+  "author": "John Doe",
+  "price": 499.00,
+  "category": "Databases",
+  "rating": 4.6,
+  "stock": 30
+}
+
+customers
+
+{
+  "_id": "CUS1001",
+  "name": "Alice Kumar",
+  "email": "alice@example.com",
+  "address": "Chennai, India"
+}
+
+orders
+
+{
+  "_id": "ORD2001",
+  "customer_id": "CUS1001",
+  "items": [
+    { "book_id": "B101", "title": "MongoDB Mastery", "quantity": 2, "price": 499.00 }
+  ],
+  "total": 998.00,
+  "order_date": "2025-07-25"
+}
+
+CRUD Operations
+
+db.books.insertOne({
+  title: "Learn Python",
+  author: "David Miller",
+  price: 399,
+  category: "Programming",
+  rating: 4.2,
+  stock: 50
+});
+
+
+Read
+
+db.books.find({ category: "Programming" });
+db.books.find({ price: { $lt: 500 } });
+
+
+Update
+
+db.books.updateOne(
+  { title: "Learn Python" },
+  { $set: { stock: 45 } }
+);
+
+Delete
+
+db.books.deleteOne({ title: "Learn Python" });
+Repeat similar CRUD operations for customers and orders collections.
+
+Aggregation Queries
+
+a. Average Price by Category
+
+db.books.aggregate([
+  { $group: { _id: "$category", avgPrice: { $avg: "$price" } } }
+])
+
+Purpose: Identify price trends in different book categories.
+
+b. Top 5 Rated Books
+
+db.books.aggregate([
+  { $sort: { rating: -1 } },
+  { $limit: 5 }
+])
+Purpose: Show the highest-rated books in the store.
+
+c. Count of Books by Category
+
+db.books.aggregate([
+  { $group: { _id: "$category", totalBooks: { $sum: 1 } } }
+])
+Purpose: Understand inventory distribution by category.
+
+d. Total Orders by Customer
+
+db.orders.aggregate([
+  { $group: { _id: "$customer_id", totalOrders: { $sum: 1 } } }
+])
